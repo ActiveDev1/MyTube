@@ -20,3 +20,15 @@ aside .nav-pills .nav-link.active {
     color: #b90000;
     border-left: 4px solid #b90000;
 }
+
+.create-comment .action-buttons {
+    display: none;
+}
+
+.create-comment.focused .action-buttons {
+    display: block;
+}
+
+.comment-avatar {
+    width: 3rem;
+}
