@@ -22,6 +22,7 @@ class m220201_143038_create_comment_table extends Migration
             'comment' => $this->text()->notNull(),
             'video_id' => $this->string(16)->notNull(),
             'parent_id' => $this->integer(11),
+            'pinned' => $this->tinyInteger()->defaultValue(0),
             'created_by' => $this->integer(11),
             'created_at' => $this->integer(11),
             'updated_at' => $this->integer(11),

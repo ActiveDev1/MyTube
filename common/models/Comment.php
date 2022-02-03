@@ -2,7 +2,12 @@
 
 namespace common\models;
 
+use common\models\query\CommentQuery;
 use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%comment}}".
@@ -11,6 +16,7 @@ use Yii;
  * @property string $comment
  * @property string $video_id
  * @property int|null $parent_id
+ * @property int|null $pinned
  * @property int|null $created_by
  * @property int|null $created_at
  * @property int|null $updated_at
@@ -20,7 +26,7 @@ use Yii;
  * @property Comment $parent
  * @property Video $video
  */
-class Comment extends \yii\db\ActiveRecord
+class Comment extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -32,13 +38,33 @@ class Comment extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
+     * @return CommentQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new CommentQuery(get_called_class());
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            [
+                'class' => BlameableBehavior::class,
+                'updatedByAttribute' => false
+            ]
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
             [['comment', 'video_id'], 'required'],
             [['comment'], 'string'],
-            [['parent_id', 'created_by', 'created_at', 'updated_at'], 'integer'],
+            [['parent_id', 'pinned', 'created_by', 'created_at', 'updated_at'], 'integer'],
             [['video_id'], 'string', 'max' => 16],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comment::className(), 'targetAttribute' => ['parent_id' => 'id']],
@@ -56,6 +82,7 @@ class Comment extends \yii\db\ActiveRecord
             'comment' => Yii::t('app', 'Comment'),
             'video_id' => Yii::t('app', 'Video ID'),
             'parent_id' => Yii::t('app', 'Parent ID'),
+            'pinned' => Yii::t('app', 'Pinned'),
             'created_by' => Yii::t('app', 'Created By'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
@@ -65,7 +92,7 @@ class Comment extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Comments]].
      *
-     * @return \yii\db\ActiveQuery|\common\models\query\CommentQuery
+     * @return ActiveQuery
      */
     public function getComments()
     {
@@ -75,7 +102,7 @@ class Comment extends \yii\db\ActiveRecord
     /**
      * Gets query for [[CreatedBy]].
      *
-     * @return \yii\db\ActiveQuery|\common\models\query\UserQuery
+     * @return ActiveQuery
      */
     public function getCreatedBy()
     {
@@ -85,7 +112,7 @@ class Comment extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Parent]].
      *
-     * @return \yii\db\ActiveQuery|\common\models\query\CommentQuery
+     * @return ActiveQuery
      */
     public function getParent()
     {
@@ -95,19 +122,15 @@ class Comment extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Video]].
      *
-     * @return \yii\db\ActiveQuery|\common\models\query\VideoQuery
+     * @return ActiveQuery
      */
     public function getVideo()
     {
         return $this->hasOne(Video::className(), ['video_id' => 'video_id']);
     }
 
-    /**
-     * {@inheritdoc}
-     * @return \common\models\query\CommentQuery the active query used by this AR class.
-     */
-    public static function find()
+    public function belongsTo($userId)
     {
-        return new \common\models\query\CommentQuery(get_called_class());
+        return $this->created_by === $userId;
     }
 }

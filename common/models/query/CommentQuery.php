@@ -2,6 +2,8 @@
 
 namespace common\models\query;
 
+use common\models\Comment;
+
 /**
  * This is the ActiveQuery class for [[\common\models\Comment]].
  *
@@ -16,7 +18,7 @@ class CommentQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \common\models\Comment[]|array
+     * @return Comment[]|array
      */
     public function all($db = null)
     {
@@ -25,10 +27,20 @@ class CommentQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \common\models\Comment|array|null
+     * @return Comment|array|null
      */
     public function one($db = null)
     {
         return parent::one($db);
+    }
+
+    public function videoId($video_id)
+    {
+        return $this->andWhere(['video_id' => $video_id]);
+    }
+
+    public function latest()
+    {
+        return $this->orderBy(['created_at' => SORT_DESC]);
     }
 }
