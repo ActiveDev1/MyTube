@@ -242,4 +242,9 @@ class Video extends ActiveRecord
     {
         return $this->hasMany(VideoLike::class, ['video_id' => 'video_id'])->disliked();
     }
+
+    public function belongsTo($userId)
+    {
+        return $this->created_by === $userId;
+    }
 }
