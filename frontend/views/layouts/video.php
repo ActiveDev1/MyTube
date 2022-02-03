@@ -29,7 +29,7 @@ AppAsset::register($this);
     </header>
 
     <main>
-        <div class="container-fluid p-3">
+        <div class="container-fluid p-3 mb-5">
             <?= $content ?>
         </div>
     </main>
