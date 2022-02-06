@@ -3,7 +3,6 @@
 namespace common\models;
 
 use common\models\query\CommentQuery;
-use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
@@ -78,14 +77,14 @@ class Comment extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'comment' => Yii::t('app', 'Comment'),
-            'video_id' => Yii::t('app', 'Video ID'),
-            'parent_id' => Yii::t('app', 'Parent ID'),
-            'pinned' => Yii::t('app', 'Pinned'),
-            'created_by' => Yii::t('app', 'Created By'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
+            'id' => 'ID',
+            'comment' => 'Comment',
+            'video_id' => 'Video ID',
+            'parent_id' => 'Parent ID',
+            'pinned' => 'Pinned',
+            'created_by' => 'Created By',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
 

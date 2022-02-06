@@ -42,17 +42,17 @@ use yii\helpers\Html;
                         <img class="mr-3 comment-avatar" src="/img/avatar-default.svg" alt="avatar">
                     </div>
                     <div class="flex-grow-1 ms-3">
-                        <form id="create-comment-form" method="post"
-                              action="<?= \yii\helpers\Url::to(['comment/create', 'video_id' => $model->video_id]) ?>">
+                        <form class="create-comment-form"
+                              method="post"
+                              action="<?= \yii\helpers\Url::to(['comment/create']) ?>">
                             <input type="hidden" name="video_id" value="<?= $model->video_id ?>">
-                            <textarea id="leave-comment"
-                                      class="form-control"
+                            <textarea class="form-control "
                                       name="comment"
                                       rows="1"
                                       placeholder="Add a public comment"></textarea>
                             <div class="action-buttons text-end mt-2">
-                                <button type="button" id="cancel-comment" class="btn btn-light">Cancel</button>
-                                <button class="btn btn-primary">Comment</button>
+                                <button type="button" class="btn btn-light btn-cancel">Cancel</button>
+                                <button class="btn btn-primary btn-save">Comment</button>
                             </div>
                         </form>
                     </div>

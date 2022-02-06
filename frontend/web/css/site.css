@@ -32,3 +32,31 @@ aside .nav-pills .nav-link.active {
 .comment-avatar {
     width: 3rem;
 }
+
+.sub-comments .comment-avatar {
+    width: 2rem;
+}
+
+.comment-actions {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+}
+
+.comment-item:hover .comment-actions {
+    display: block;
+}
+
+.comment-item .media-input {
+    display: none;
+}
+
+.comment-item.edit .media-comment {
+    display: none !important;
+}
+
+.comment-item.edit .media-input {
+    display: flex;
+}
